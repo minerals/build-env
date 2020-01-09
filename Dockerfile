@@ -1,5 +1,5 @@
 FROM ubuntu:16.04
-MAINTAINER piotr@mines.io
+MAINTAINER piotr@migo.money
 
 #common
 RUN apt-get update && apt-get install -y man git g++ make vim wget curl byobu unzip libopenblas-dev \
@@ -20,6 +20,51 @@ RUN cd /usr/local; \
 # SBT 0.13.6 continues to be a pain in the ass and tries to override memory settings regardless
 # of our environment variables. Prevent it from doing so.
 RUN sed -i".bak" '/$(get_mem_opts $sbt_mem) /d' /usr/local/sbt/bin/sbt-launch-lib.bash
+
+# Python data science libs
+RUN apt-get install -y python-leveldb libleveldb-dev
+RUN pip install jupyter plyvel===0.9
+RUN apt-get install -y python-numpy python-scipy python-matplotlib python-pandas python-sympy python-nose
+
+# Go 1.6
+RUN cd /tmp/; \
+    curl -O https://storage.googleapis.com/golang/go1.6.linux-amd64.tar.gz; \
+    tar -xvf go1.6.linux-amd64.tar.gz; \
+    mv go /usr/local/
+ENV PATH $PATH:/usr/local/go/bin/
+ENV GOPATH /usr/local/go-workspace/
+
+# AWS utilities
+RUN pip install boto3; \
+    pip install futures; \
+    pip install awscli
+
+# Ansible
+RUN apt-get install -y build-essential libssl-dev libffi-dev python-dev
+RUN pip install ansible==2.1.1
+RUN pip install boto
+
+# OpenSSH
+RUN apt-get install -y openssh-server
+
+# Install SNAP (needed for graph analysis)
+RUN cd /tmp/; \
+    wget https://s3.eu-central-1.amazonaws.com/mine-fs/snap-1.2-2.4-centos6.5-x64-py2.6.tar.gz; \
+    tar -xzf snap-1.2-2.4-centos6.5-x64-py2.6.tar.gz; \
+    cd snap-1.2-2.4-centos6.5-x64-py2.6; \
+    python setup.py install
+
+# Install protobuf (needed for Delite cluster applications)
+RUN cd /tmp/; \
+    wget https://github.com/google/protobuf/releases/download/v2.5.0/protobuf-2.5.0.tar.gz; \
+    tar -xzf protobuf-2.5.0.tar.gz; \
+    cd protobuf-2.5.0; \
+    ./configure; \
+    make; \
+    make install
+
+# Protobuf libs are put here
+ENV LD_LIBRARY_PATH /usr/local/lib/    
 
 # Add executable scripts to our default path
 ENV PATH $PATH:/usr/local/sbt/bin/
