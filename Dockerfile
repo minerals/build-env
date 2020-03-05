@@ -2,8 +2,29 @@ FROM ubuntu:16.04
 MAINTAINER piotr@migo.money
 
 #common
-RUN apt-get update && apt-get install -y man git g++ make vim wget curl byobu unzip libopenblas-dev \
-    python-setuptools python-dev bc ant maven openjdk-8-jdk octave
+RUN apt-get update && && apt-get upgrade -y && apt-get install -y \
+      ant \
+      bc \
+      build-essential \
+      byobu \
+      curl \
+      git \
+      g++ \
+      jq \
+      make \
+      man \
+      maven \
+      libffi-dev \
+      libopenblas-dev \
+      libssl-dev \
+      octave \
+      openjdk-8-jdk-headless \
+      openssh-server \
+      python-setuptools \
+      python-dev \
+      unzip \
+      vim \
+      wget
 RUN easy_install py4j
 
 # Pip
@@ -35,17 +56,14 @@ ENV PATH $PATH:/usr/local/go/bin/
 ENV GOPATH /usr/local/go-workspace/
 
 # AWS utilities
-RUN pip install boto3; \
-    pip install futures; \
-    pip install awscli
+RUN pip install \
+      awscli \
+      boto3 \
+      boto \
+      futures
 
 # Ansible
-RUN apt-get install -y build-essential libssl-dev libffi-dev python-dev
 RUN pip install ansible==2.1.1
-RUN pip install boto
-
-# OpenSSH
-RUN apt-get install -y openssh-server
 
 # Install SNAP (needed for graph analysis)
 RUN cd /tmp/; \
