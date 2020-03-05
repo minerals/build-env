@@ -24,7 +24,8 @@ RUN apt-get update && && apt-get upgrade -y && apt-get install -y \
       python-dev \
       unzip \
       vim \
-      wget
+      wget; \
+    apt-get clean
 RUN easy_install py4j
 
 # Pip
@@ -43,9 +44,9 @@ RUN cd /usr/local; \
 RUN sed -i".bak" '/$(get_mem_opts $sbt_mem) /d' /usr/local/sbt/bin/sbt-launch-lib.bash
 
 # Python data science libs
-RUN apt-get install -y python-leveldb libleveldb-dev
+RUN apt-get install -y python-leveldb libleveldb-dev && apt-get clean
 RUN pip install jupyter plyvel===0.9
-RUN apt-get install -y python-numpy python-scipy python-matplotlib python-pandas python-sympy python-nose
+RUN apt-get install -y python-numpy python-scipy python-matplotlib python-pandas python-sympy python-nose && apt-get clean
 
 # Go 1.6
 RUN cd /tmp/; \
