@@ -2,7 +2,7 @@ FROM ubuntu:16.04
 MAINTAINER piotr@migo.money
 
 #common
-RUN apt-get update && && apt-get upgrade -y && apt-get install -y \
+RUN apt-get update && apt-get upgrade -y && apt-get install -y \
       ant \
       bc \
       build-essential \
