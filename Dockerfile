@@ -57,14 +57,14 @@ ENV PATH $PATH:/usr/local/go/bin/
 ENV GOPATH /usr/local/go-workspace/
 
 # AWS utilities
-RUN pip install \
+RUN pip install --no-cache-dir \
       awscli \
       boto3 \
       boto \
       futures
 
 # Ansible
-RUN pip install ansible==2.1.1
+RUN pip install --no-cache-dir ansible==2.1.1
 
 # Install SNAP (needed for graph analysis)
 RUN cd /tmp/; \
