@@ -63,9 +63,6 @@ RUN pip install \
       boto \
       futures
 
-# Ansible
-RUN pip install ansible==2.1.1
-
 # Install SNAP (needed for graph analysis)
 RUN cd /tmp/; \
     wget https://s3.eu-central-1.amazonaws.com/mine-fs/snap-1.2-2.4-centos6.5-x64-py2.6.tar.gz; \
