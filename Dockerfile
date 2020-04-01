@@ -45,7 +45,7 @@ RUN sed -i".bak" '/$(get_mem_opts $sbt_mem) /d' /usr/local/sbt/bin/sbt-launch-li
 
 # Python data science libs
 RUN apt-get install -y python-leveldb libleveldb-dev && apt-get clean
-RUN pip install jupyter plyvel===0.9
+RUN pip install --no-cache-dir jupyter plyvel===0.9
 RUN apt-get install -y python-numpy python-scipy python-matplotlib python-pandas python-sympy python-nose && apt-get clean
 
 # Go 1.6
@@ -57,14 +57,14 @@ ENV PATH $PATH:/usr/local/go/bin/
 ENV GOPATH /usr/local/go-workspace/
 
 # AWS utilities
-RUN pip install \
+RUN pip install --no-cache-dir \
       awscli \
       boto3 \
       boto \
       futures
 
-# Ansible
-RUN pip install ansible==2.1.1
+# Ansible	
+RUN pip install --no-cache-dir ansible==2.6.2	
 
 # Install SNAP (needed for graph analysis)
 RUN cd /tmp/; \
